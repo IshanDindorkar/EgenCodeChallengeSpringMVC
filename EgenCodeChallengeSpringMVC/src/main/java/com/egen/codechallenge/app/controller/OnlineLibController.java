@@ -1,10 +1,11 @@
 package com.egen.codechallenge.app.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.egen.codechallenge.model.User;
 
 @RestController
@@ -24,5 +25,11 @@ public class OnlineLibController {
 		else if(gender.equalsIgnoreCase("Female"))
 			return OnlineLibUtils.createUser(firstName, lastName, Integer.parseInt(age), User.Gender.FEMALE, phoneNumber, zipCode);
 		return null;	
+	}
+	
+	@RequestMapping(value="/getAllUsers", method=RequestMethod.GET)
+	public List<User> getAllUsers(){
+		return OnlineLibUtils.getAllUsers();
+		
 	}
 }

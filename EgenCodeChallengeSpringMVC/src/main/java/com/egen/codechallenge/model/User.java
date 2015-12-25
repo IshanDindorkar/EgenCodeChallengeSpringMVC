@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 
 public class User {
-	private final UUID id = UUID.randomUUID();
+	private String id = "USER_"+UUID.randomUUID().toString();
 	public enum Gender{
 		MALE,
 		FEMALE
@@ -29,21 +29,27 @@ public class User {
 	private String phoneNumber;
 	private String zipCode;
 	
-	private Logger log = Logger.getLogger(User.class);
+	private static Logger log = Logger.getLogger(User.class);
 
 	/**
 	 * Default Constructor
 	 */
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @return the id
 	 */
-	public UUID getId() {
+	public String getId() {
 		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**

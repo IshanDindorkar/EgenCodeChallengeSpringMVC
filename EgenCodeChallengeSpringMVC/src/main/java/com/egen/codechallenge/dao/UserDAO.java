@@ -16,4 +16,5 @@ public interface UserDAO {
 	public void save(User user);
 	public void delete(User user);
 	public List<User> findByFirstName(String firstName);
+	public List<User> findAll();
 }

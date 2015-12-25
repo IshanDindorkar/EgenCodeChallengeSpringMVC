@@ -5,7 +5,9 @@ package com.egen.codechallenge.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -36,16 +38,25 @@ public class UserDAOImpl implements UserDAO {
 	public UserDAOImpl() {
 		
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.egen.codechallenge.dao.UserDAO#createTable()
+	 */
+	@Override
+	public void createTable() {
+		initConf();
+		jdbcTemplate.execute("DROP TABLE Users IF EXISTS");
+        jdbcTemplate.execute("CREATE TABLE Users (" +
+                "id VARCHAR(255), firstName VARCHAR(255), lastName VARCHAR(255), age INTEGER, gender VARCHAR(10), phoneNumber VARCHAR(10), zipCode VARCHAR(10))");
+		
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.egen.codechallenge.dao.UserDAO#save(com.egen.codechallenge.model.User)
 	 */
 	@Override
 	public void save(User user) {
-		AbstractApplicationContext context = new AnnotationConfigApplicationContext(OnlineLibAppConfig.class);
-		dataSource = (DataSource) context.getBean("dataSource");
-		jdbcTemplate = new JdbcTemplate(dataSource);
-		//jdbcTemplate.batchUpdate("INSERT INTO Users (id, firstName, lastName, age, gender, phoneNumber, zipCode) VALUES (1,'Ishan','Dindorkar',25,'Male','9729879137','75067')");
+		initConf();
 		String insertSQL = "INSERT INTO Users (id, firstName, lastName, age, gender, phoneNumber, zipCode) VALUES (?,?,?,?,?,?,?)";
 		jdbcTemplate.update(insertSQL, new PreparedStatementSetter(){
 
@@ -58,9 +69,7 @@ public class UserDAOImpl implements UserDAO {
 				ps.setString(5, user.getGender().toString());
 				ps.setString(6, user.getPhoneNumber());
 				ps.setString(7, user.getZipCode());
-				
 			}
-			
 		});
 	}
 
@@ -83,17 +92,37 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.egen.codechallenge.dao.UserDAO#createTable()
+	 * @see com.egen.codechallenge.dao.UserDAO#findAll()
 	 */
 	@Override
-	public void createTable() {
+	public List<User> findAll() {
+		String selectSQL = "SELECT * FROM Users";
+		List<User> registeredUsers = new ArrayList<User>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(selectSQL);
+		for(Map row: rows){
+			User user = new User();
+			user.setId(String.valueOf(row.get("id")));
+			user.setFirstName(String.valueOf(row.get("firstName")));
+			user.setLastName(String.valueOf(row.get("lastName")));
+			user.setAge(Integer.parseInt(String.valueOf(row.get("age"))));
+			if(String.valueOf(row.get("gender")).equalsIgnoreCase("Male"))
+				user.setGender(User.Gender.MALE);
+			else
+				user.setGender(User.Gender.FEMALE);
+			user.setPhoneNumber(String.valueOf(row.get("phoneNumber")));
+			user.setZipCode(String.valueOf(row.get("zipCode")));
+			registeredUsers.add(user);
+		}
+		return registeredUsers;
+	}
+	
+	/**
+	 * 
+	 */
+	private void initConf() {
 		AbstractApplicationContext context = new AnnotationConfigApplicationContext(OnlineLibAppConfig.class);
 		dataSource = (DataSource) context.getBean("dataSource");
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.execute("DROP TABLE Users IF EXISTS");
-        jdbcTemplate.execute("CREATE TABLE Users (" +
-                "id VARCHAR(255), firstName VARCHAR(255), lastName VARCHAR(255), age INTEGER, gender VARCHAR(10), phoneNumber VARCHAR(10), zipCode VARCHAR(10))");
-		
 	}
 
 }
