@@ -14,6 +14,7 @@ import com.egen.codechallenge.model.User;
 public interface UserDAO {
 	public void createTable();
 	public void save(User user);
+	public void update(User user);
 	public void delete(User user);
 	public List<User> findByFirstName(String firstName);
 	public List<User> findAll();

@@ -32,7 +32,6 @@ public class OnlineLibUtils {
 		userDAO.createTable();
 	}
 	
-	@SuppressWarnings("resource")
 	public static String createUser(String firstName, String lastName, int age, User.Gender gender, String phoneNumber, String zipCode){
 		List<User> registeredUsers = (List<User>) userDAO.findAll();
 		if(!registeredUsers.isEmpty()){
@@ -55,5 +54,17 @@ public class OnlineLibUtils {
 	
 	public static List<User> getAllUsers(){
 		return userDAO.findAll();
+	}
+	
+	public static void updateUser(String id, String firstName, String lastName, int age, User.Gender gender, String phoneNumber, String zipCode){
+		User user = new User();
+		user.setId(id);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setAge(age);
+		user.setGender(gender);
+		user.setPhoneNumber(phoneNumber);
+		user.setZipCode(zipCode);
+		userDAO.update(user);
 	}
 }

@@ -32,4 +32,20 @@ public class OnlineLibController {
 		return OnlineLibUtils.getAllUsers();
 		
 	}
+	
+	@RequestMapping(value="/updateUser",method=RequestMethod.PUT)
+	public String updateUser(@RequestParam(value="id") String id,
+							 @RequestParam(value="firstName") String firstName,
+							 @RequestParam(value="lastName") String lastName,
+							 @RequestParam(value="age") String age,
+							 @RequestParam(value="gender") String gender,
+							 @RequestParam(value="phoneNumber") String phoneNumber,
+							 @RequestParam(value="zipCode") String zipCode){
+		
+		if(gender.equalsIgnoreCase("Male"))
+			OnlineLibUtils.updateUser(id, firstName, lastName, Integer.parseInt(age), User.Gender.MALE, phoneNumber, zipCode);
+		else if(gender.equalsIgnoreCase("Female"))
+			OnlineLibUtils.updateUser(id, firstName, lastName, Integer.parseInt(age), User.Gender.FEMALE, phoneNumber, zipCode);
+		return "User details updated";	
+	}
 }

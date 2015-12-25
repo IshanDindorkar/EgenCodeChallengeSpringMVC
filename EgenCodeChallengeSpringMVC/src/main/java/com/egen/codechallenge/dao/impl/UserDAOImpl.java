@@ -14,7 +14,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 
@@ -62,7 +61,7 @@ public class UserDAOImpl implements UserDAO {
 
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, user.getId().toString());
+				ps.setString(1, user.getId());
 				ps.setString(2, user.getFirstName());
 				ps.setString(3, user.getLastName());
 				ps.setInt(4, user.getAge());
@@ -116,6 +115,34 @@ public class UserDAOImpl implements UserDAO {
 		return registeredUsers;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.egen.codechallenge.dao.UserDAO#update(com.egen.codechallenge.model.User)
+	 */
+	@Override
+	public void update(User user) {
+		initConf();
+		String selectSQL = "SELECT * FROM Users";
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(selectSQL);
+		for(Map row: rows){
+			if(String.valueOf(row.get("id")).equalsIgnoreCase(user.getId())){
+				String updateSQL = "UPDATE Users SET firstName = ?, lastName = ?, age = ?, gender = ?, phoneNumber = ?, zipCode = ? where id = ?";
+				jdbcTemplate.update(updateSQL, new PreparedStatementSetter(){
+
+					@Override
+					public void setValues(PreparedStatement ps) throws SQLException {
+						ps.setString(7, user.getId());
+						ps.setString(1, user.getFirstName());
+						ps.setString(2, user.getLastName());
+						ps.setInt(3, user.getAge());
+						ps.setString(4, user.getGender().toString());
+						ps.setString(5, user.getPhoneNumber());
+						ps.setString(6, user.getZipCode());
+					}
+				});
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 */
@@ -124,5 +151,6 @@ public class UserDAOImpl implements UserDAO {
 		dataSource = (DataSource) context.getBean("dataSource");
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
+
 
 }
