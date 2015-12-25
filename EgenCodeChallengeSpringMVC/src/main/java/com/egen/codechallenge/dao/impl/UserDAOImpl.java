@@ -4,6 +4,7 @@
 package com.egen.codechallenge.dao.impl;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,13 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import com.egen.codechallenge.app.controller.OnlineLibAppConfig;
 import com.egen.codechallenge.dao.UserDAO;
+import com.egen.codechallenge.model.Book;
 import com.egen.codechallenge.model.User;
 
 /**
@@ -140,6 +144,38 @@ public class UserDAOImpl implements UserDAO {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.egen.codechallenge.dao.UserDAO#findById(java.lang.String)
+	 */
+	@Override
+	public User findById(String id) {
+		String selectUserSQL = "SELECT * FROM Users where id = ?";
+		User user = jdbcTemplate.execute(selectUserSQL, new PreparedStatementCallback<User>() {
+
+			@Override
+			public User doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setString(1, id);
+				User user = new User();
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					user.setId(rs.getString(1));
+					user.setFirstName(rs.getString(2));
+					user.setLastName(rs.getString(3));
+					user.setAge(rs.getInt(4));
+					if(rs.getString(5).equalsIgnoreCase("Male"))
+						user.setGender(User.Gender.MALE);
+					else
+						user.setGender(User.Gender.FEMALE);
+					user.setPhoneNumber(rs.getString(6));
+					user.setZipCode(rs.getString(7));
+				}
+				return user;
+			}
+		});
+		
+		return user;
+	}
+	
 	/**
 	 * 
 	 */
@@ -148,6 +184,4 @@ public class UserDAOImpl implements UserDAO {
 		dataSource = (DataSource) context.getBean("dataSource");
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-
-
 }

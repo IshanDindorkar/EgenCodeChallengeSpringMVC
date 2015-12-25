@@ -69,7 +69,26 @@ public class BookDAOImpl implements BookDAO {
 	 */
 	@Override
 	public void update(Book book) {
-		// TODO Auto-generated method stub
+
+		initConf();
+		String selectSQL = "SELECT * FROM Books";
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(selectSQL);
+		for(Map row: rows){
+			if(String.valueOf(row.get("id")).equalsIgnoreCase(book.getId())){
+				String updateSQL = "UPDATE Books SET bookName = ?, authors = ?, borrowerId = ? where id = ?";
+				jdbcTemplate.update(updateSQL, new PreparedStatementSetter(){
+
+					@Override
+					public void setValues(PreparedStatement ps) throws SQLException {
+						ps.setString(4, book.getId());
+						ps.setString(1, book.getBookName());
+						ps.setString(2, book.getAuthors());
+						ps.setString(3, book.getBorrowerId());
+					}
+				});
+			}
+		}
+	
 
 	}
 
@@ -121,9 +140,36 @@ public class BookDAOImpl implements BookDAO {
 			book.setId(String.valueOf(row.get("id")));
 			book.setBookName(String.valueOf(row.get("bookName")));
 			book.setAuthors(String.valueOf(row.get("authors")));
+			book.setBorrowerId(String.valueOf(row.get("borrowerId")));
 			availableBooks.add(book);
 		}
 		return availableBooks;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.egen.codechallenge.dao.BookDAO#findById(java.lang.String)
+	 */
+	@Override
+	public Book findById(String id) {
+		String selectBookSQL = "SELECT * FROM Books where id = ?";
+		Book book = jdbcTemplate.execute(selectBookSQL, new PreparedStatementCallback<Book>() {
+
+			@Override
+			public Book doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setString(1, id);
+				Book book = new Book();
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					book.setId(rs.getString(1));
+					book.setBookName(rs.getString(2));
+					book.setAuthors(rs.getString(3));
+					book.setBorrowerId(rs.getString(4));
+				}
+				return book;
+			}
+		});
+		
+		return book;
 	}
 	
 	/**
@@ -134,5 +180,4 @@ public class BookDAOImpl implements BookDAO {
 		dataSource = (DataSource) context.getBean("dataSource");
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-
 }

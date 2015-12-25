@@ -13,7 +13,6 @@ import com.egen.codechallenge.model.User;
 @RestController
 public class OnlineLibController {
 	
-	
 	@RequestMapping(value="/createUser",method=RequestMethod.POST, produces = {"text/plain","application/JSON"})
 	public String createUser(@RequestParam(value="firstName") String firstName,
 							 @RequestParam(value="lastName") String lastName,
@@ -66,5 +65,19 @@ public class OnlineLibController {
 	@RequestMapping(value="/findBookByName", method=RequestMethod.GET, produces = {"application/JSON"})
 	public Book findBookByName(@RequestParam(value="bookName") String bookName){
 		return OnlineLibUtils.findBookByName(bookName);
+	}
+	
+	@RequestMapping(value="/checkoutBook",method=RequestMethod.PUT, produces = {"text/plain","application/JSON"})
+	public String checkoutBook(@RequestParam(value="bookId") String bookId,
+							   @RequestParam(value="userId") String userId){
+		int status = OnlineLibUtils.checkoutBook(bookId, userId);
+		if(status == 1)
+			return "Book checked out successfully";
+		else if(status == -1)
+			return "Book does not exist in the system";
+		else if(status == 0)
+			return "User does not exist in the system";
+		else
+			return "Book is not available for checkout";
 	}
 }

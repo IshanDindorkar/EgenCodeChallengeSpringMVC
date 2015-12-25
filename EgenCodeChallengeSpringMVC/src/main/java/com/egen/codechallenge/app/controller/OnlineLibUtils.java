@@ -94,4 +94,27 @@ public class OnlineLibUtils {
 	public static Book findBookByName(String bookName){
 		return bookDAO.findByName(bookName);
 	}
+	
+	public static int checkoutBook(String bookId, String userId){
+		User user = userDAO.findById(userId);
+		if(user.getFirstName()!=null){
+			Book book = bookDAO.findById(bookId);
+			if(book.getBookName()!=null){
+				if(book.getBorrowerId() == null){
+					book.setBorrowerId(userId);
+					bookDAO.update(book);
+					return 1;
+				}	
+				else {
+					return 2; // book is not available for checkout
+				}
+			}
+			else{
+				return -1; // book does not exist
+			}
+		}
+		else{
+			return 0; // user does not exist
+		}
+	}
 }
