@@ -3,6 +3,7 @@
  */
 package com.egen.codechallenge.model;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
 
 
 public class User {
-	private long id;
+	private final UUID id = UUID.randomUUID();
 	public enum Gender{
 		MALE,
 		FEMALE
@@ -41,15 +42,8 @@ public class User {
 	/**
 	 * @return the id
 	 */
-	public long getId() {
+	public UUID getId() {
 		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	/**

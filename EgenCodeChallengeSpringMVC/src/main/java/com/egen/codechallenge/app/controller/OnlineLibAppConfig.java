@@ -12,6 +12,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import com.egen.codechallenge.dao.UserDAO;
+import com.egen.codechallenge.dao.impl.UserDAOImpl;
+
 /**
  * @author IshanD
  *
@@ -19,10 +22,10 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 @Configuration
 public class OnlineLibAppConfig {
 	
-	/*@Bean(name="userDAO")
+	@Bean(name="userDAO")
 	public UserDAO userDAO(){
 		return new UserDAOImpl();
-	}*/
+	}
 	
 	@Bean(name="dataSource")
 	public DataSource dataSource() {
