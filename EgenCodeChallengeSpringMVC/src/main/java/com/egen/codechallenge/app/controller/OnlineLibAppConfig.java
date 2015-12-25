@@ -1,5 +1,5 @@
-/** Configuration class
- * 
+/** 
+ * Configuration class
  */
 package com.egen.codechallenge.app.controller;
 

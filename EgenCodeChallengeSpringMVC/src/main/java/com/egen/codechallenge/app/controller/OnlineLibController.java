@@ -1,3 +1,7 @@
+/** 
+ * Controller class having business logic for all REST service endpoints
+ */
+
 package com.egen.codechallenge.app.controller;
 
 import java.util.List;
@@ -6,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.egen.codechallenge.model.Book;
 import com.egen.codechallenge.model.User;
 

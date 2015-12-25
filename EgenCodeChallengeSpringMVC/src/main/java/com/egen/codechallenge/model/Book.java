@@ -1,5 +1,5 @@
 /**  
- * Model class that represents Book in the online Library Management System
+ * Model class that represents Book instance in the online Library Management System
  */
 package com.egen.codechallenge.model;
 

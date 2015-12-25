@@ -1,5 +1,5 @@
 /**
- * JUnit Test Cases for all REST service endpoints defined in REST API for Online Library Management System
+ * JUnit Test Cases for all service end points defined in REST API for Online Library Management System
  */
 
 package com.egen.codechallenge.test;

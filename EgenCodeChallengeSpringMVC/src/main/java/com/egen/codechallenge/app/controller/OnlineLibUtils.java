@@ -1,5 +1,5 @@
-/** Class containing all utility methods invoked in OnlineLibController class
- * 
+/** 
+ * Class containing all utility methods invoked in OnlineLibController class
  */
 package com.egen.codechallenge.app.controller;
 
@@ -32,7 +32,6 @@ public class OnlineLibUtils {
 		userDAO.createUserTable();
 		bookDAO = (BookDAO)context.getBean("bookDAO");
 		bookDAO.createBookTable();
-		
 	}
 	
 	public static String createUser(String firstName, String lastName, int age, User.Gender gender, String phoneNumber, String zipCode){

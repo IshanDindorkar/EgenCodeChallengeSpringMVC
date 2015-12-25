@@ -1,7 +1,10 @@
+/** 
+ * Entry point class for the application
+ */
+
 package com.egen.codechallenge.app.controller;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
