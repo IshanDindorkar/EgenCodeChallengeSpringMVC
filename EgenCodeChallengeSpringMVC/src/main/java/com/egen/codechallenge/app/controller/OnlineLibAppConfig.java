@@ -13,7 +13,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import com.egen.codechallenge.dao.BookDAO;
 import com.egen.codechallenge.dao.UserDAO;
+import com.egen.codechallenge.dao.impl.BookDAOImpl;
 import com.egen.codechallenge.dao.impl.UserDAOImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -28,6 +30,11 @@ public class OnlineLibAppConfig {
 	@Bean(name="userDAO")
 	public UserDAO userDAO(){
 		return new UserDAOImpl();
+	}
+	
+	@Bean(name="bookDAO")
+	public BookDAO bookDAO(){
+		return new BookDAOImpl();
 	}
 	
 	@Bean(name="dataSource")

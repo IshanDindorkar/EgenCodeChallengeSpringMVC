@@ -1,5 +1,5 @@
-/**
- * 
+/** 
+ * Interface that defines CRUD operations for User instance in the Online Library Management System
  */
 package com.egen.codechallenge.dao;
 
@@ -12,7 +12,7 @@ import com.egen.codechallenge.model.User;
  *
  */
 public interface UserDAO {
-	public void createTable();
+	public void createUserTable();
 	public void save(User user);
 	public void update(User user);
 	public void delete(User user);

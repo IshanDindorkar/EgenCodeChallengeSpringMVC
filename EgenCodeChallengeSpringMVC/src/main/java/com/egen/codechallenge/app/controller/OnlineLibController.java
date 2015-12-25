@@ -6,13 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.egen.codechallenge.model.Book;
 import com.egen.codechallenge.model.User;
 
 @RestController
 public class OnlineLibController {
 	
 	
-	@RequestMapping(value="/createUser",method=RequestMethod.POST)
+	@RequestMapping(value="/createUser",method=RequestMethod.POST, produces = {"text/plain","application/JSON"})
 	public String createUser(@RequestParam(value="firstName") String firstName,
 							 @RequestParam(value="lastName") String lastName,
 							 @RequestParam(value="age") String age,
@@ -27,13 +29,13 @@ public class OnlineLibController {
 		return null;	
 	}
 	
-	@RequestMapping(value="/getAllUsers", method=RequestMethod.GET)
+	@RequestMapping(value="/getAllUsers", method=RequestMethod.GET, produces = {"application/JSON"})
 	public List<User> getAllUsers(){
 		return OnlineLibUtils.getAllUsers();
 		
 	}
 	
-	@RequestMapping(value="/updateUser",method=RequestMethod.PUT)
+	@RequestMapping(value="/updateUser",method=RequestMethod.PUT, produces = {"text/plain","application/JSON"})
 	public String updateUser(@RequestParam(value="id") String id,
 							 @RequestParam(value="firstName") String firstName,
 							 @RequestParam(value="lastName") String lastName,
@@ -47,5 +49,22 @@ public class OnlineLibController {
 		else if(gender.equalsIgnoreCase("Female"))
 			OnlineLibUtils.updateUser(id, firstName, lastName, Integer.parseInt(age), User.Gender.FEMALE, phoneNumber, zipCode);
 		return "User details updated";	
+	}
+	
+	@RequestMapping(value="/addBook",method=RequestMethod.POST, produces = {"text/plain","application/JSON"})
+	public String addBook(@RequestParam(value="bookName") String bookName,
+					      @RequestParam(value="authors") String authors){
+		
+		return OnlineLibUtils.addBook(bookName, authors);
+	}
+	
+	@RequestMapping(value="/getAllBooks", method=RequestMethod.GET, produces = {"application/JSON"})
+	public List<Book> getAllBooks(){
+		return OnlineLibUtils.getAllBooks();
+	}
+	
+	@RequestMapping(value="/findBookByName", method=RequestMethod.GET, produces = {"application/JSON"})
+	public Book findBookByName(@RequestParam(value="bookName") String bookName){
+		return OnlineLibUtils.findBookByName(bookName);
 	}
 }

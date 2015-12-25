@@ -4,15 +4,12 @@
 package com.egen.codechallenge.app.controller;
 
 import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
-
+import com.egen.codechallenge.dao.BookDAO;
 import com.egen.codechallenge.dao.UserDAO;
+import com.egen.codechallenge.model.Book;
 import com.egen.codechallenge.model.User;
 
 /**
@@ -26,10 +23,16 @@ public class OnlineLibUtils {
 	@Autowired
 	private static UserDAO userDAO;
 	
+	@Autowired
+	private static BookDAO bookDAO;
+	
 	static{
 		AbstractApplicationContext context = new AnnotationConfigApplicationContext(OnlineLibAppConfig.class);
 		userDAO = (UserDAO)context.getBean("userDAO");
-		userDAO.createTable();
+		userDAO.createUserTable();
+		bookDAO = (BookDAO)context.getBean("bookDAO");
+		bookDAO.createBookTable();
+		
 	}
 	
 	public static String createUser(String firstName, String lastName, int age, User.Gender gender, String phoneNumber, String zipCode){
@@ -66,5 +69,29 @@ public class OnlineLibUtils {
 		user.setPhoneNumber(phoneNumber);
 		user.setZipCode(zipCode);
 		userDAO.update(user);
+	}
+	
+	public static String addBook(String bookName, String authors){
+		List<Book> availableBooks = (List<Book>) bookDAO.findAll();
+		if(!availableBooks.isEmpty()){
+			for(Book book:availableBooks)	{
+				if(book.getBookName().equalsIgnoreCase(bookName))
+					return "Book already exist in the system. The Book Id is "+book.getId();
+			}
+		}
+		
+		Book book = new Book();
+		book.setBookName(bookName);
+		book.setAuthors(authors);
+		bookDAO.save(book);
+		return "The book has been added successfully to the repository. The id is "+book.getId();
+	}
+	
+	public static List<Book> getAllBooks(){
+		return bookDAO.findAll();
+	}
+	
+	public static Book findBookByName(String bookName){
+		return bookDAO.findByName(bookName);
 	}
 }

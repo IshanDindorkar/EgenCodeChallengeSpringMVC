@@ -4,6 +4,7 @@
 package com.egen.codechallenge.model;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * @author IshanD
@@ -13,10 +14,10 @@ import java.util.Arrays;
 
 public class Book {
 	
-	private long id;
+	private String id = "BOOK_"+UUID.randomUUID().toString();
 	private String bookName;
-	private String[] authors;
-	private User borrower;
+	private String authors;
+	private String borrowerId;
 	/**
 	 * Default Constructor
 	 */
@@ -27,13 +28,13 @@ public class Book {
 	/**
 	 * @return the id
 	 */
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	/**
@@ -51,26 +52,26 @@ public class Book {
 	/**
 	 * @return the authors
 	 */
-	public String[] getAuthors() {
+	public String getAuthors() {
 		return authors;
 	}
 	/**
 	 * @param authors the authors to set
 	 */
-	public void setAuthors(String[] authors) {
+	public void setAuthors(String authors) {
 		this.authors = authors;
 	}
 	/**
 	 * @return the borrower
 	 */
-	public User getBorrower() {
-		return borrower;
+	public String getBorrowerId() {
+		return borrowerId;
 	}
 	/**
 	 * @param borrower the borrower to set
 	 */
-	public void setBorrower(User borrower) {
-		this.borrower = borrower;
+	public void setBorrowerId(String borrowerId) {
+		this.borrowerId = borrowerId;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -78,8 +79,8 @@ public class Book {
 	@Override
 	public String toString() {
 		return "Book [id=" + id + ", " + (bookName != null ? "bookName=" + bookName + ", " : "")
-				+ (authors != null ? "authors=" + Arrays.toString(authors) + ", " : "")
-				+ (borrower != null ? "borrower=" + borrower : "") + "]";
+				+ (authors != null ? "authors=" + authors + ", " : "")
+				+ (borrowerId != null ? "borrower=" + borrowerId : "") + "]";
 	}
 	
 }

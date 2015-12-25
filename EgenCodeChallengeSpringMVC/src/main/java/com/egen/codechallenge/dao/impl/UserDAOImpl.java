@@ -1,5 +1,5 @@
-/**
- * 
+/** 
+ * Class containing implementation of methods defined in UserDAO interface
  */
 package com.egen.codechallenge.dao.impl;
 
@@ -8,15 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
-
 import com.egen.codechallenge.app.controller.OnlineLibAppConfig;
 import com.egen.codechallenge.dao.UserDAO;
 import com.egen.codechallenge.model.User;
@@ -42,7 +39,7 @@ public class UserDAOImpl implements UserDAO {
 	 * @see com.egen.codechallenge.dao.UserDAO#createTable()
 	 */
 	@Override
-	public void createTable() {
+	public void createUserTable() {
 		initConf();
 		jdbcTemplate.execute("DROP TABLE Users IF EXISTS");
         jdbcTemplate.execute("CREATE TABLE Users (" +
